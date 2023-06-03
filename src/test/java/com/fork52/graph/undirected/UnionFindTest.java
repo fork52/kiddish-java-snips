@@ -1,9 +1,7 @@
 package com.fork52.graph.undirected;
 
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 public class UnionFindTest {
     @Test
@@ -13,7 +11,7 @@ public class UnionFindTest {
     }
 
     @Test()
-    public void testUnionSetValid(){
+    public void testUnionSetOneComponentValid(){
         int n = 10;
         UnionFind unionFind = new UnionFind(n);
         for(int i = 0; i < n; i++){
@@ -22,5 +20,24 @@ public class UnionFindTest {
 
         for(int i = 0; i < n; i++)
             Assertions.assertEquals(n, unionFind.getComponentSize(i));
+
+        // Check if the unionSet method returns false for any
+        // further calls.
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++)
+                Assertions.assertFalse(unionFind.unionSet(0, i));
+        }
+    }
+
+    @Test()
+    public void testUnionSetTwoSetsValid(){
+        int n = 10;
+        UnionFind unionFind = new UnionFind(n);
+        for(int i = 0; i < n; i++){
+            unionFind.unionSet(i & 1, i);
+        }
+
+        for(int i = 0; i < n; i++)
+            Assertions.assertEquals(n / 2, unionFind.getComponentSize(i));
     }
 }
